@@ -17,6 +17,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.WrittenBookItem;
+import net.minecraft.recipe.NetworkRecipeId;
+import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.ScreenHandlerType;
@@ -292,9 +294,9 @@ public class SGuiTest implements ModInitializer {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             SimpleGui gui = new SimpleGui(ScreenHandlerType.CRAFTING, player, false) {
                 @Override
-                public void onCraftRequest(Identifier recipeId, boolean shift) {
-                    super.onCraftRequest(recipeId, shift);
-                    this.player.sendMessage(Text.literal(recipeId.toString() + " - " + shift), false);
+                public void onCraftRequest(ServerRecipeManager.ServerRecipe serverRecipe, boolean shift) {
+                    super.onCraftRequest(serverRecipe, shift);
+                    this.player.sendMessage(Text.literal(serverRecipe.toString() + " - " + shift), false);
                 }
             };
 

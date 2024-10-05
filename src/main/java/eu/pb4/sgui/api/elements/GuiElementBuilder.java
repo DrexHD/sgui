@@ -273,7 +273,7 @@ public class GuiElementBuilder implements GuiElementBuilderInterface<GuiElementB
      * @return this element builder
      */
     public GuiElementBuilder enchant(RegistryWrapper.WrapperLookup lookup, RegistryKey<Enchantment> enchantment, int level) {
-        return enchant(lookup.getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(enchantment), level);
+        return enchant(lookup.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(enchantment), level);
     }
 
     /**

@@ -83,7 +83,7 @@ public abstract class ServerPlayNetworkHandlerMixin extends ServerCommonNetworkH
                         if (type.numKey) {
                             int x = type.value + handler.slots.size() - 10;
                             GuiHelpers.sendSlotUpdate(player, handler.syncId, x, handler.getSlot(x).getStack(), handler.nextRevision());
-                        } else if (type == ClickType.MOUSE_DOUBLE_CLICK || type == ClickType.MOUSE_LEFT_SHIFT || type == ClickType.MOUSE_RIGHT_SHIFT || (type.isDragging && type.value == 2)) {
+                        } else if (type == ClickType.MOUSE_DOUBLE_CLICK || type == ClickType.MOUSE_LEFT_SHIFT || type == ClickType.MOUSE_RIGHT_SHIFT || type == ClickType.MOUSE_LEFT || type == ClickType.MOUSE_RIGHT || type == ClickType.MOUSE_MIDDLE || (type.isDragging && type.value == 2)) {
                             GuiHelpers.sendPlayerScreenHandler(this.player);
                         }
                     }
@@ -181,7 +181,7 @@ public abstract class ServerPlayNetworkHandlerMixin extends ServerCommonNetworkH
     private void sgui$catchRecipeRequests(CraftRequestC2SPacket packet, CallbackInfo ci) {
         if (this.player.currentScreenHandler instanceof VirtualScreenHandler handler && handler.getGui() instanceof SimpleGui gui) {
             try {
-                gui.onCraftRequest(packet.getRecipeId(), packet.method_61226());
+                gui.onCraftRequest(this.server.getRecipeManager().method_64686(packet.recipeId()), packet.craftAll());
             } catch (Throwable e) {
                 handler.getGui().handleException(e);
             }
@@ -199,7 +199,7 @@ public abstract class ServerPlayNetworkHandlerMixin extends ServerCommonNetworkH
                 ci.cancel();
             }
         } catch (Throwable e) {
-            if (this.player.currentScreenHandler instanceof VirtualScreenHandlerInterface handler ) {
+            if (this.player.currentScreenHandler instanceof VirtualScreenHandlerInterface handler) {
                 handler.getGui().handleException(e);
             } else {
                 e.printStackTrace();
@@ -268,7 +268,7 @@ public abstract class ServerPlayNetworkHandlerMixin extends ServerCommonNetworkH
                     screenHandler.slotsOld.set(45, ItemStack.EMPTY);
                 }
 
-                this.sendPacket(new BlockUpdateS2CPacket(pos, this.player. getServerWorld().getBlockState(pos)));
+                this.sendPacket(new BlockUpdateS2CPacket(pos, this.player.getServerWorld().getBlockState(pos)));
                 pos = pos.offset(packet.getBlockHitResult().getSide());
                 this.sendPacket(new BlockUpdateS2CPacket(pos, this.player.getServerWorld().getBlockState(pos)));
                 this.sendPacket(new PlayerActionResponseS2CPacket(packet.getSequence()));
@@ -303,7 +303,7 @@ public abstract class ServerPlayNetworkHandlerMixin extends ServerCommonNetworkH
         if (this.player.currentScreenHandler instanceof HotbarScreenHandler screenHandler) {
             var gui = screenHandler.getGui();
             var buf = new PacketByteBuf(Unpooled.buffer());
-            ((PlayerInteractEntityC2SPacketAccessor)packet).invokeWrite(buf);
+            ((PlayerInteractEntityC2SPacketAccessor) packet).invokeWrite(buf);
 
             int entityId = buf.readVarInt();
             var type = buf.readEnumConstant(HotbarGui.EntityInteraction.class);

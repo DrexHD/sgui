@@ -11,6 +11,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerPropertyUpdateS2CPacket;
+import net.minecraft.recipe.NetworkRecipeId;
+import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -184,10 +186,10 @@ public class SimpleGui extends BaseSlotGui {
     /**
      * Executes after player clicks any recipe from recipe book.
      *
-     * @param recipe the selected recipe identifier
+     * @param recipe the selected recipe
      * @param shift  is shift was held
      */
-    public void onCraftRequest(Identifier recipe, boolean shift) {
+    public void onCraftRequest(ServerRecipeManager.ServerRecipe recipe, boolean shift) {
     }
 
     @Override
